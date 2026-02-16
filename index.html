@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>致老朋友：2026 马力全开！</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;900&family=ZCOOL+KuaiLe&family=Noto+Sans+SC:wght@300;500;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="antialiased selection:bg-red-500 selection:text-white">
+
+    <div id="canvas-container"></div>
+
+    <nav class="glass-panel sticky top-0 z-50 rounded-b-2xl mx-2 mt-2 transition-all">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 sm:h-20">
+                <div class="flex items-center gap-2 sm:gap-3">
+                    <div class="w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center text-yellow-300 font-black text-lg sm:text-2xl border-2 border-yellow-500 rounded-lg bg-red-900 shadow-lg">马</div>
+                    <span class="text-lg sm:text-xl font-bold text-yellow-100 cyber-font tracking-widest">CYBER HORSE</span>
+                </div>
+                <div class="hidden md:flex items-center space-x-6">
+                    <button onclick="scrollToSection('stats')" class="text-red-200 hover:text-white font-bold transition">飞升趋势</button>
+                    <button onclick="scrollToSection('couplets')" class="text-red-200 hover:text-white font-bold transition">春节对联</button>
+                    <button onclick="toggleChat()" class="px-5 py-2 bg-gradient-to-r from-red-700 to-orange-600 text-white rounded-full font-black transition flex items-center gap-2 border border-yellow-500/50 hover:shadow-lg hover:scale-105">
+                        <span>🤖 护航员</span>
+                    </button>
+                </div>
+                <div class="md:hidden flex items-center">
+                    <button onclick="toggleMobileMenu()" class="text-yellow-400 text-2xl focus:outline-none p-2">☰</button>
+                </div>
+            </div>
+        </div>
+        <div id="mobile-menu" class="hidden glass-panel border-t border-red-500/20 p-4 absolute w-full rounded-b-2xl">
+            <button onclick="scrollToSection('stats'); toggleMobileMenu()" class="block w-full text-left py-3 text-red-100 font-bold border-b border-white/5">📈 飞升趋势</button>
+            <button onclick="scrollToSection('wishes'); toggleMobileMenu()" class="block w-full text-left py-3 text-red-100 font-bold border-b border-white/5">🏮 全息开光</button>
+            <button onclick="toggleChat(); toggleMobileMenu()" class="block w-full text-left py-3 text-yellow-400 font-black">🧑‍🚀 召唤护航员</button>
+        </div>
+    </nav>
+
+    <header class="relative pt-24 pb-16 sm:pt-32 sm:pb-24 text-center px-4">
+        <div class="max-w-5xl mx-auto relative z-10">
+            <div class="inline-block px-4 py-1 sm:px-6 sm:py-2 mb-6 sm:mb-8 rounded-full glass-panel text-yellow-400 text-xs font-black tracking-widest uppercase border border-red-500/30 shadow-lg">
+                To My Best Bro · 2026 Special
+            </div>
+            <h1 class="text-5xl sm:text-7xl md:text-9xl font-black text-white tracking-tight mb-6 sm:mb-8 leading-none drop-shadow-[0_0_25px_rgba(220,38,38,0.5)] cyber-font">
+                万马 <br><span class="text-gradient">奔腾</span>
+            </h1>
+            <p class="text-lg sm:text-xl md:text-2xl text-red-100 mb-10 sm:mb-16 max-w-2xl mx-auto leading-relaxed glass-panel p-6 sm:p-8 rounded-3xl shadow-2xl border border-red-900/50">
+                抬头看，赛博赤兔为你开路！<br>
+                2026，愿你的运势如这飞升的曲线般<span class="text-yellow-400 font-bold">昂扬向上</span>。<br>
+                Offer 拿到手软，生活热辣滚烫。
+            </p>
+            <div class="flex flex-col sm:flex-row justify-center gap-4 sm:gap-6">
+                <button onclick="scrollToSection('stats')" class="w-full sm:w-auto px-8 py-4 bg-gradient-to-b from-red-800 to-red-950 text-white font-black rounded-xl shadow-lg hover:scale-105 transition transform text-lg border border-red-500/50">
+                    📈 查看飞升运势
+                </button>
+                <button onclick="toggleChat()" class="w-full sm:w-auto glass-panel px-8 py-4 text-yellow-300 font-black border border-yellow-500/40 rounded-xl hover:bg-white/5 transition transform hover:scale-105 flex items-center justify-center gap-2 text-lg">
+                    <span>💵 预测搞钱运势</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <section id="stats" class="py-16 sm:py-24 relative px-4">
+        <div class="max-w-6xl mx-auto relative z-10">
+            <div class="text-center mb-12 sm:mb-16">
+                <h2 class="text-3xl sm:text-4xl font-black text-yellow-300 mb-4 sm:mb-6 festive-font">🚀 来看看你今年的运势：昂扬向上</h2>
+                <p class="text-red-200 text-sm sm:text-lg">交互式 3D 模型：拖动查看你的资产与颜值如何螺旋上升。</p>
+            </div>
+            
+            <div id="chart-3d-wrapper">
+                <div id="chart-3d-canvas"></div>
+                <div class="absolute bottom-4 left-6 text-cyan-300 font-bold text-sm sm:text-base bg-black/50 px-3 py-1 rounded-lg border border-cyan-500/30">起点: 现在</div>
+                <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-purple-300 font-bold text-xs sm:text-sm bg-black/50 px-2 py-1 rounded border border-purple-500/30">Q2 爆发期</div>
+                <div class="absolute top-6 right-6 text-yellow-300 font-black text-lg sm:text-xl bg-black/50 px-4 py-2 rounded-xl border border-yellow-500/50 animate-pulse">2026 巅峰: 泼天富贵</div>
+                <div class="absolute bottom-4 right-4 text-slate-400 text-xs italic">🖱️ 拖拽旋转 / 👆 手指滑动</div>
+            </div>
+        </div>
+    </section>
+
+    <section id="couplets" class="py-20 sm:py-32 relative px-4">
+        <div class="max-w-4xl mx-auto relative z-10 text-center">
+            <div class="horseshoe-card p-8 sm:p-12 border border-blue-500/30 shadow-2xl">
+                <h2 class="text-3xl sm:text-4xl font-black text-white mb-4 sm:mb-6 festive-font">✨ 赛博春联生成器</h2>
+                <p class="text-cyan-200 mb-8 sm:mb-10 text-base sm:text-lg">输入关键词（如：H1B、全A、中餐自由），AI 为你赋诗。</p>
+                <div class="flex flex-col sm:flex-row gap-4 mb-8 sm:mb-12">
+                    <input type="text" id="couplet-key" placeholder="输入关键词..." class="flex-1 px-6 py-4 rounded-xl bg-black/60 border border-cyan-500/40 text-white text-lg font-bold placeholder-slate-500 outline-none focus:border-cyan-400">
+                    <button onclick="createCouplet()" class="bg-gradient-to-r from-blue-700 to-purple-800 text-white font-black px-8 py-4 rounded-xl border border-cyan-500 hover:scale-105 transition w-full sm:w-auto">生成</button>
+                </div>
+                <div id="couplet-result" class="hidden flex-col items-center animate-fade-in"></div>
+                <div id="couplet-load" class="hidden text-cyan-300 font-bold animate-pulse text-lg">🤖 AI 正在疯狂平仄平仄...</div>
+            </div>
+        </div>
+    </section>
+
+    <section id="wishes" class="py-16 sm:py-24 relative px-4">
+        <div class="max-w-6xl mx-auto relative z-10">
+            <h2 class="text-4xl sm:text-5xl font-black text-center text-white mb-10 sm:mb-16 festive-font text-gradient">全息开光 · 三大愿景</h2>
+            <div class="flex flex-wrap justify-center gap-3 sm:gap-6 mb-8 sm:mb-12">
+                <button onclick="showWish('study')" id="tab-study" class="px-6 py-3 sm:px-10 sm:py-4 rounded-xl font-bold text-sm sm:text-xl transition active-tab">🎓 学神附体</button>
+                <button onclick="showWish('life')" id="tab-life" class="px-6 py-3 sm:px-10 sm:py-4 rounded-xl font-bold text-sm sm:text-xl transition inactive-tab">🍔 顶级玩家</button>
+                <button onclick="showWish('rich')" id="tab-rich" class="px-6 py-3 sm:px-10 sm:py-4 rounded-xl font-bold text-sm sm:text-xl transition inactive-tab">💰 资本大鳄</button>
+            </div>
+            <div id="wish-area" class="horseshoe-card p-8 sm:p-12 min-h-[300px] sm:min-h-[400px] shadow-2xl"></div>
+        </div>
+    </section>
+
+    <section id="moments" class="py-16 sm:py-24 relative px-4">
+        <div class="max-w-4xl mx-auto relative z-10">
+            <div class="text-center mb-12 sm:mb-16">
+                <h2 class="text-3xl sm:text-4xl font-black text-yellow-300 mb-4 sm:mb-6 festive-font">👀 跨国默契度检测</h2>
+                <p class="text-red-200 text-sm sm:text-lg">AI 判官已就位，请开始你的表演。</p>
+            </div>
+            <div class="grid grid-cols-1 gap-6 sm:gap-8" id="moment-grid"></div>
+        </div>
+    </section>
+
+    <section id="bag" class="py-16 sm:py-24 relative px-4">
+        <div class="max-w-4xl mx-auto relative z-10">
+            <div class="horseshoe-card p-8 sm:p-12 border border-purple-500/50 shadow-2xl text-center">
+                <div class="text-5xl sm:text-6xl mb-4 sm:mb-6 animate-bounce">🎁</div>
+                <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4 sm:mb-6 festive-font">向多元宇宙下订单</h2>
+                <p class="text-purple-200 mb-8 sm:mb-10 text-sm sm:text-lg">AI 将把你的愿望加密发送至全宇宙。</p>
+                <div class="flex flex-col sm:flex-row gap-4 max-w-2xl mx-auto">
+                    <input type="text" id="wish-input" placeholder="输入愿望 (如: Offer拿到手软)..." class="flex-1 px-6 py-4 rounded-xl focus:outline-none border border-purple-500/40 bg-black/60 text-white text-lg font-bold">
+                    <button onclick="getFortuneBag()" class="bg-gradient-to-r from-purple-700 to-pink-900 text-white font-black px-8 py-4 rounded-xl hover:scale-105 transition text-lg border border-purple-400 w-full sm:w-auto">BROADCAST</button>
+                </div>
+                <div id="fortune-result" class="hidden mt-10 p-6 sm:p-8 bg-black/50 rounded-xl border-2 border-purple-500 border-dashed animate-fade-in text-left"></div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-black/90 py-16 sm:py-20 border-t border-slate-800 text-center px-4">
+        <p class="cyber-font text-2xl sm:text-3xl text-red-500 mb-4">GLHF & HAPPY 2026</p>
+        <p class="text-slate-600 text-xs sm:text-sm font-mono tracking-widest uppercase">Designed for the Global Elite</p>
+    </footer>
+
+    <div class="fixed bottom-6 right-6 sm:bottom-10 sm:right-10 z-50 flex flex-col items-end">
+        <div id="chat-win" class="chat-window mb-4 sm:mb-6 glass-panel overflow-hidden flex flex-col">
+            <div class="bg-gradient-to-r from-red-700 to-orange-700 p-4 sm:p-5 flex justify-between items-center border-b border-yellow-500/30">
+                <h3 class="text-yellow-300 font-black cyber-font text-sm sm:text-base">CYBER GUARDIAN</h3>
+                <button onclick="toggleChat()" class="text-white text-xl">✕</button>
+            </div>
+            <div id="chat-msgs" class="flex-1 overflow-y-auto p-4 sm:p-5 space-y-4 bg-black/40">
+                <div class="ai-message p-3 sm:p-4 rounded-2xl text-xs sm:text-sm leading-relaxed font-bold">
+                    Hey Bro! 终于等到你了。我是你的专属赛博留学护航员。汇率波动？Final 压力？还是想找人吐槽？I'm here for you. 
+                </div>
+            </div>
+            <div class="p-3 sm:p-4 flex gap-2 border-t border-white/10 bg-black/80">
+                <input type="text" id="chat-in" placeholder="Type here..." class="flex-1 px-4 py-2 rounded-xl bg-slate-800/50 text-white outline-none border border-red-500/30 text-sm" onkeypress="if(event.key==='Enter') sendMsg()">
+                <button onclick="sendMsg()" class="bg-red-700 text-white px-3 sm:px-4 py-2 rounded-xl font-bold text-sm">➤</button>
+            </div>
+        </div>
+        <button onclick="toggleChat()" class="bg-red-800 p-4 sm:p-6 rounded-full shadow-2xl shadow-red-500/30 hover:scale-110 transition border-2 border-yellow-400">
+            <span class="text-3xl sm:text-4xl">🎩</span>
+        </button>
+    </div>
+
+    <script src="script.js" defer></script>
+</body>
+</html>
